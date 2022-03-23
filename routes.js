@@ -1,26 +1,12 @@
 const express = require("express");
-// const bodyParser = require("body-parser");
 const date = require(__dirname + "/date.js");
-
-// const app = express();
-// const {toDoItem,wtoDoItem} = require("./models");
 const mongoose = require("mongoose");
 
 
-// const url = 'mongodb://localhost:27017/testdb';
-//
-// MongoClient.connect(url, (err, client) =>
-//
-//     const db = client.db('testdb');
-//
-//     db.listCollections().toArray((err, collections) => {
-//
-//        console.log(collections);
-//
-//        client.close();
-//     });
-//
-// });
+
+
+
+///////////////////////////////making connection to database/////////////////////////////////////////////////////
 
 
 let dbc = mongoose.connect('mongodb://localhost:27017/toDoItemDb', {
@@ -29,8 +15,7 @@ let dbc = mongoose.connect('mongodb://localhost:27017/toDoItemDb', {
 });
 
 
-// const { db } = mongoose.connection;
-// const result =   db.collection('toDoItemDb').find().toArray();
+
 
 const db1 = mongoose.connection;
 
@@ -41,7 +26,10 @@ db1.once("open", function() {
   console.log("Connected successfully");
 });
 
-// const db = mongoose.connection.db;
+
+
+
+////////////////////////////////making schema and model for database////////////////////////////////////////////
 
 const ItemSchema = new mongoose.Schema({
   listItem: {
@@ -68,10 +56,16 @@ const {
 } = require("./dataModel");
 const app = express();
 
+
 const items = ["Buy Food", "Cook Food", "Eat Food"];
 const workItems = [];
 
   const day = date.getDate();
+
+
+///////////////////////////////routing  for home path of url  ////////////////////////////////////////////
+
+//////////////////////////////get(read) route for home path  of url  ////////////////////////////////////////////
 
 app.get("/home/:listNameP", async (req, res) => {
 
@@ -117,28 +111,11 @@ app.get("/home/:listNameP", async (req, res) => {
             res.end()
           }
 
-  // const result = await  db.collection('toDoItemDb').find().toArray();
-  // console.log(result);
-  //
-  // connection.once('open', function () {
-
-  //     connection.db.collection("YourCollectionName", function(err, collection){
-  //         collection.find({}).toArray(function(err, data){
-  //             console.log(data); // it will print your collection data
-  //         })
-  //     });
-  //
-  // });
-
-
-
-  //  const toDoItemArray = await toDoItem.find({});
-  //
-  //
-  // res.render("list", {listTitle: day, newListItems: toDoItemArray});
 
 });
 
+
+//////////////////////////////post(write) route for home path  of url  ////////////////////////////////////////////
 
 
 
@@ -180,6 +157,13 @@ app.post("/home/:listNameP", async (req, res) => {
 
 });
 
+
+///////////////////////////////routing  for delete path of url  ////////////////////////////////////////////
+
+//////////////////////////////post route for delete path  of url  ////////////////////////////////////////////
+
+
+
 app.post("/delete/:listNameP", async (req,res)=>{
   const listItems = req.body.item;
   let collectionName = req.params.listNameP;
@@ -193,16 +177,68 @@ app.post("/delete/:listNameP", async (req,res)=>{
 
 })
 
-// app.get("/work", async (req,res)=>{
-//
-//    const  wtoDoItemArray = await wtoDoItem.find({});
-//
-//   res.render("list", {listTitle: "Work List", newListItems: wtoDoItemArray});
-// });
-//
-// app.get("/about", function(req, res){
-//   res.render("about");
-// });
+
+
+///////////////////////////////exporting to other  ////////////////////////////////////////////
 
 
 module.exports = app;
+
+
+// const app = express();
+// const {toDoItem,wtoDoItem} = require("./models");
+// // const { db } = mongoose.connection;
+// const result =   db.collection('toDoItemDb').find().toArray();
+// // const bodyParser = require("body-parser");
+// // const db = mongoose.connection.db;
+
+
+
+// const url = 'mongodb://localhost:27017/testdb';
+//
+// MongoClient.connect(url, (err, client) =>
+//
+//     const db = client.db('testdb');
+//
+//     db.listCollections().toArray((err, collections) => {
+//
+//        console.log(collections);
+//
+//        client.close();
+//     });
+//
+// });
+//
+//
+//
+  // const result = await  db.collection('toDoItemDb').find().toArray();
+  // console.log(result);
+  //
+  // connection.once('open', function () {
+
+  //     connection.db.collection("YourCollectionName", function(err, collection){
+  //         collection.find({}).toArray(function(err, data){
+  //             console.log(data); // it will print your collection data
+  //         })
+  //     });
+  //
+  // });
+
+
+
+  //  const toDoItemArray = await toDoItem.find({});
+  //
+  //
+  // res.render("list", {listTitle: day, newListItems: toDoItemArray});
+
+
+  // app.get("/work", async (req,res)=>{
+  //
+  //    const  wtoDoItemArray = await wtoDoItem.find({});
+  //
+  //   res.render("list", {listTitle: "Work List", newListItems: wtoDoItemArray});
+  // });
+  //
+  // app.get("/about", function(req, res){
+  //   res.render("about");
+  // });
